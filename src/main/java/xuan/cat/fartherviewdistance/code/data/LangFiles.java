@@ -15,31 +15,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** 語言文件 */
+/**
+ * 語言文件
+ */
 public final class LangFiles {
-    /** 全部語言文件 */
+    /**
+     * 全部語言文件
+     */
     private final Map<Locale, JsonObject> fileMap = new ConcurrentHashMap<>();
-    /** 預設語言文件 */
+    /**
+     * 預設語言文件
+     */
     private final JsonObject defaultMap = loadLang(Locale.ENGLISH);
 
-
-    /**
-     * @param sender 執行人
-     * @param key 條目鑰匙
-     * @return 語言條目
-     */
-    public String get(CommandSender sender, String key) {
-        if (sender instanceof Player) {
-            try {
-                // 1.16 以上
-                return get(((Player) sender).locale(), key);
-            } catch (NoSuchMethodError noSuchMethodError) {
-                return get(parseLocale(((Player) sender).getLocale()), key);
-            }
-        } else {
-            return get(Locale.ENGLISH, key);
-        }
-    }
     private static Locale parseLocale(String string) {
         String[] segments = string.split("_", 3);
         int length = segments.length;
@@ -54,9 +42,28 @@ public final class LangFiles {
                 return null;
         }
     }
+
+    /**
+     * @param sender 執行人
+     * @param key    條目鑰匙
+     * @return 語言條目
+     */
+    public String get(CommandSender sender, String key) {
+        if (sender instanceof Player) {
+            try {
+                // 1.16 以上
+                return get(((Player) sender).locale(), key);
+            } catch (NoSuchMethodError noSuchMethodError) {
+                return get(parseLocale(((Player) sender).getLocale()), key);
+            }
+        } else {
+            return get(Locale.ENGLISH, key);
+        }
+    }
+
     /**
      * @param locale 語言類型
-     * @param key 條目鑰匙
+     * @param key    條目鑰匙
      * @return 語言條目
      */
     public String get(Locale locale, String key) {
@@ -68,6 +75,7 @@ public final class LangFiles {
             return defaultMap.get(key).getAsString();
         }
     }
+
     /**
      * @param locale 語言類型
      * @return 讀取語言文件

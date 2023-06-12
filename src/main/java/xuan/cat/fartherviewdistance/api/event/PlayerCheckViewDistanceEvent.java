@@ -6,19 +6,22 @@ import xuan.cat.fartherviewdistance.api.data.PlayerView;
 public final class PlayerCheckViewDistanceEvent extends ExtendChunkEvent {
     private static final HandlerList handlers = new HandlerList();
 
-    private final int       serverDistance;
-    private final int       clientDistance;
-    private final int       maxDistance;
-    private       Integer   forciblyDistance;
+    private final int serverDistance;
+    private final int clientDistance;
+    private final int maxDistance;
+    private Integer forciblyDistance;
 
 
     public PlayerCheckViewDistanceEvent(PlayerView view, int serverDistance, int clientDistance, int maxDistance) {
         super(view);
         this.serverDistance = serverDistance;
         this.clientDistance = clientDistance;
-        this.maxDistance    = maxDistance;
+        this.maxDistance = maxDistance;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     public int getClientDistance() {
         return clientDistance;
@@ -40,12 +43,7 @@ public final class PlayerCheckViewDistanceEvent extends ExtendChunkEvent {
         this.forciblyDistance = forciblyDistance;
     }
 
-
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

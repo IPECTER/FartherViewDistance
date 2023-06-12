@@ -11,18 +11,20 @@ import xuan.cat.fartherviewdistance.api.data.PlayerView;
  */
 public final class PlayerSendExtendChunkEvent extends ExtendChunkEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-
-    private       boolean       cancel  = false;
-    private final BranchChunk   chunk;
-    private final World         world;
+    private final BranchChunk chunk;
+    private final World world;
+    private boolean cancel = false;
 
 
     public PlayerSendExtendChunkEvent(PlayerView view, BranchChunk chunk, World world) {
         super(view);
-        this.chunk  = chunk;
-        this.world  = world;
+        this.chunk = chunk;
+        this.world = world;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     public BranchChunk getChunk() {
         return chunk;
@@ -40,12 +42,7 @@ public final class PlayerSendExtendChunkEvent extends ExtendChunkEvent implement
         this.cancel = cancel;
     }
 
-
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

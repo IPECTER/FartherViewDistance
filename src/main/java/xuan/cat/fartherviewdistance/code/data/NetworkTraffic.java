@@ -4,7 +4,7 @@ package xuan.cat.fartherviewdistance.code.data;
  * 網路流量
  */
 public final class NetworkTraffic {
-//    /** 寫入紀錄 */
+    //    /** 寫入紀錄 */
 //    private volatile int[] writeArray = new int[20];
 //    /** 寫入累計 */
 //    private final AtomicInteger writeTotal = new AtomicInteger(0);
@@ -13,6 +13,7 @@ public final class NetworkTraffic {
 
     /**
      * 已使用
+     *
      * @param length 位元組數量
      */
     public synchronized void use(int length) {

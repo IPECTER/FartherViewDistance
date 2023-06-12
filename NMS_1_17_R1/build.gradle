@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+dependencies {
+    implementation project(path: ':NMS')
+    compileOnly files('nms/patched_1.17.1.jar')
+}

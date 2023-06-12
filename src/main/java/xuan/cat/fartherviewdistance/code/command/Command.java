@@ -139,6 +139,7 @@ public final class Command implements CommandExecutor {
         String timeSegment = chunkServer.lang.get(sender, "command.report.5s") + "/" + chunkServer.lang.get(sender, "command.report.1m") + "/" + chunkServer.lang.get(sender, "command.report.5m");
         sender.sendMessage(ChatColor.YELLOW + chunkServer.lang.get(sender, "command.report.source") + ChatColor.WHITE + " | " + ChatColor.GREEN + chunkServer.lang.get(sender, "command.report.fast") + " " + timeSegment + ChatColor.WHITE + " | " + ChatColor.RED + chunkServer.lang.get(sender, "command.report.slow") + " " + timeSegment + ChatColor.WHITE + " | " + ChatColor.GOLD + chunkServer.lang.get(sender, "command.report.flow") + " " + timeSegment);
     }
+
     private void sendReportCumulative(CommandSender sender, String source, CumulativeReport cumulativeReport) {
         sender.sendMessage(ChatColor.YELLOW + source + ChatColor.WHITE + " | " + ChatColor.GREEN + cumulativeReport.reportLoadFast5s() + "/" + cumulativeReport.reportLoadFast1m() + "/" + cumulativeReport.reportLoadFast5m() + ChatColor.WHITE + " | " + ChatColor.RED + cumulativeReport.reportLoadSlow5s() + "/" + cumulativeReport.reportLoadSlow1m() + "/" + cumulativeReport.reportLoadSlow5m() + ChatColor.WHITE + " | " + ChatColor.GOLD + cumulativeReport.reportConsume5s() + "/" + cumulativeReport.reportConsume1m() + "/" + cumulativeReport.reportConsume5m());
     }

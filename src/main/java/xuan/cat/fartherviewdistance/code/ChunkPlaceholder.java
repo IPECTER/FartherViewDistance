@@ -10,10 +10,12 @@ import java.util.Locale;
 
 public final class ChunkPlaceholder extends PlaceholderExpansion {
     private static ChunkPlaceholder imp;
+
     public static void registerPlaceholder() {
         imp = new ChunkPlaceholder();
         imp.register();
     }
+
     public static void unregisterPlaceholder() {
         if (imp != null) {
             imp.unregister();

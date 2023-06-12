@@ -11,12 +11,11 @@ public final class PlayerInitViewEvent extends ExtendChunkEvent {
         super(view);
     }
 
-
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlers() {
         return handlers;
     }
 }

@@ -27,46 +27,80 @@ import java.util.function.Consumer;
  * 區塊伺服器
  */
 public final class ChunkServer {
-    private final ConfigData configData;
-    private final Plugin plugin;
-    private boolean running = true;
+    /**
+     * 隨機數產生器
+     */
+    public static final Random random = new Random();
     public final BranchMinecraft branchMinecraft;
     public final BranchPacket branchPacket;
-    private final Set<BukkitTask> bukkitTasks = ConcurrentHashMap.newKeySet();
-    /** 隨機數產生器 */
-    public static final Random random = new Random();
-    /** 多執行緒服務 */
-    private ScheduledExecutorService multithreadedService;
-    /** 允許運行執行緒 */
-    private AtomicBoolean multithreadedCanRun;
-    /** 每個玩家的視圖計算器 */
+    /**
+     * 每個玩家的視圖計算器
+     */
     public final Map<Player, PlayerChunkView> playersViewMap = new ConcurrentHashMap<>();
-    /** 伺服器網路流量 */
-    private final NetworkTraffic serverNetworkTraffic = new NetworkTraffic();
-    /** 每個世界網路流量 */
-    private final Map<World, NetworkTraffic> worldsNetworkTraffic = new ConcurrentHashMap<>();
-    /** 最後一次的全部世界 */
-    private List<World> lastWorldList = new ArrayList<>();
-    /** 伺服器已生成區塊數量 */
-    private final AtomicInteger serverGeneratedChunk = new AtomicInteger(0);
-    /** 伺服器報告 */
+    /**
+     * 伺服器報告
+     */
     public final CumulativeReport serverCumulativeReport = new CumulativeReport();
-    /** 每個世界已生成區塊數量 */
-    private final Map<World, AtomicInteger> worldsGeneratedChunk = new ConcurrentHashMap<>();
-    /** 每個世界報告 */
+    /**
+     * 每個世界報告
+     */
     public final Map<World, CumulativeReport> worldsCumulativeReport = new ConcurrentHashMap<>();
-    /** 等待前往主執行緒 */
-    private final Set<Runnable> waitMoveSyncQueue = ConcurrentHashMap.newKeySet();
-    /** 每個執行序耗時 */
+    /**
+     * 每個執行序耗時
+     */
     public final Map<Integer, CumulativeReport> threadsCumulativeReport = new ConcurrentHashMap<>();
-    /** 全部執行緒 */
+    /**
+     * 全部執行緒
+     */
     public final Set<Thread> threadsSet = ConcurrentHashMap.newKeySet();
-    /** 全局停止 */
-    public volatile boolean globalPause = false;
-    /** 語言 */
+    /**
+     * 語言
+     */
     public final LangFiles lang = new LangFiles();
-    /** 視圖形狀 */
+    private final ConfigData configData;
+    private final Plugin plugin;
+    private final Set<BukkitTask> bukkitTasks = ConcurrentHashMap.newKeySet();
+    /**
+     * 伺服器網路流量
+     */
+    private final NetworkTraffic serverNetworkTraffic = new NetworkTraffic();
+    /**
+     * 每個世界網路流量
+     */
+    private final Map<World, NetworkTraffic> worldsNetworkTraffic = new ConcurrentHashMap<>();
+    /**
+     * 伺服器已生成區塊數量
+     */
+    private final AtomicInteger serverGeneratedChunk = new AtomicInteger(0);
+    /**
+     * 每個世界已生成區塊數量
+     */
+    private final Map<World, AtomicInteger> worldsGeneratedChunk = new ConcurrentHashMap<>();
+    /**
+     * 等待前往主執行緒
+     */
+    private final Set<Runnable> waitMoveSyncQueue = ConcurrentHashMap.newKeySet();
+    /**
+     * 視圖形狀
+     */
     private final ViewShape viewShape;
+    /**
+     * 全局停止
+     */
+    public volatile boolean globalPause = false;
+    private boolean running = true;
+    /**
+     * 多執行緒服務
+     */
+    private ScheduledExecutorService multithreadedService;
+    /**
+     * 允許運行執行緒
+     */
+    private AtomicBoolean multithreadedCanRun;
+    /**
+     * 最後一次的全部世界
+     */
+    private List<World> lastWorldList = new ArrayList<>();
 
 
     public ChunkServer(ConfigData configData, Plugin plugin, ViewShape viewShape, BranchMinecraft branchMinecraft, BranchPacket branchPacket) {
@@ -104,12 +138,14 @@ public final class ChunkServer {
         playersViewMap.put(player, view);
         return view;
     }
+
     /**
      * 清除玩家區塊視圖
      */
     public void clearView(Player player) {
         playersViewMap.remove(player);
     }
+
     /**
      * @return 玩家區塊視圖
      */
@@ -146,10 +182,10 @@ public final class ChunkServer {
             runView(canRun);
         }, 0, TimeUnit.MILLISECONDS);
 
-        for (int index = 0 ; index < configData.asyncThreadAmount ; index++) {
+        for (int index = 0; index < configData.asyncThreadAmount; index++) {
             int threadNumber = index;
             CumulativeReport threadCumulativeReport = new CumulativeReport();
-            threadsCumulativeReport.put(index, threadCumulativeReport)  ;
+            threadsCumulativeReport.put(index, threadCumulativeReport);
             // 每個執行續每 50 毫秒響應一次
             multithreadedService.schedule(() -> {
                 Thread thread = Thread.currentThread();
@@ -170,6 +206,7 @@ public final class ChunkServer {
         worldsCumulativeReport.put(world, new CumulativeReport());
         worldsGeneratedChunk.put(world, new AtomicInteger(0));
     }
+
     /**
      * 清除世界
      */
@@ -180,10 +217,9 @@ public final class ChunkServer {
     }
 
 
-
     /**
      * 同步滴答
-     *  主要用於處裡一些不可異步的操作
+     * 主要用於處裡一些不可異步的操作
      */
     private void tickSync() {
         List<World> worldList = Bukkit.getWorlds();
@@ -288,7 +324,8 @@ public final class ChunkServer {
                         worldsViews.computeIfAbsent(view.getLastWorld(), key -> new ArrayList<>()).add(view);
                     }
 
-                    handleServer: {
+                    handleServer:
+                    {
                         for (World world : worldList) {
                             // 世界配置
                             ConfigData.World configWorld = configData.getWorld(world.getName());
@@ -310,7 +347,8 @@ public final class ChunkServer {
                             /// 世界已生成的區塊數量
                             AtomicInteger worldGeneratedChunk = worldsGeneratedChunk.getOrDefault(world, new AtomicInteger(Integer.MAX_VALUE));
 
-                            handleWorld: {
+                            handleWorld:
+                            {
                                 // 所有玩家都網路流量都已滿載
                                 boolean playersFull = false;
                                 while (!playersFull && effectiveTime >= System.currentTimeMillis()) {
@@ -344,7 +382,8 @@ public final class ChunkServer {
                                         int chunkX = ViewMap.getX(chunkKey);
                                         int chunkZ = ViewMap.getZ(chunkKey);
 
-                                        handlePlayer: {
+                                        handlePlayer:
+                                        {
                                             if (!configData.disableFastProcess) {
                                                 // 讀取最新
                                                 try {
@@ -364,7 +403,8 @@ public final class ChunkServer {
                                                             break handlePlayer;
                                                         }
                                                     }
-                                                } catch (NullPointerException | NoClassDefFoundError | NoSuchMethodError | NoSuchFieldError exception) {
+                                                } catch (NullPointerException | NoClassDefFoundError |
+                                                         NoSuchMethodError | NoSuchFieldError exception) {
                                                     exception.printStackTrace();
                                                 } catch (Exception ignored) {
                                                 }
@@ -381,7 +421,8 @@ public final class ChunkServer {
                                                         sendChunk(world, configWorld, worldNetworkTraffic, view, chunkX, chunkZ, chunkNBT, branchMinecraft.fromLight(world, chunkNBT), syncKey, worldCumulativeReport, threadCumulativeReport);
                                                         break handlePlayer;
                                                     }
-                                                } catch (NullPointerException | NoClassDefFoundError | NoSuchMethodError | NoSuchFieldError exception) {
+                                                } catch (NullPointerException | NoClassDefFoundError |
+                                                         NoSuchMethodError | NoSuchFieldError exception) {
                                                     exception.printStackTrace();
                                                 } catch (Exception ignored) {
                                                 }
@@ -409,7 +450,8 @@ public final class ChunkServer {
                                                         asyncRunnable.forEach(Runnable::run);
                                                         sendChunk(world, configWorld, worldNetworkTraffic, view, chunkX, chunkZ, chunkNBT, chunkLight, syncKey, worldCumulativeReport, threadCumulativeReport);
                                                         break handlePlayer;
-                                                    } catch (NullPointerException | NoClassDefFoundError | NoSuchMethodError | NoSuchFieldError exception) {
+                                                    } catch (NullPointerException | NoClassDefFoundError |
+                                                             NoSuchMethodError | NoSuchFieldError exception) {
                                                         exception.printStackTrace();
                                                     } catch (Exception ignored) {
                                                     }
@@ -436,7 +478,8 @@ public final class ChunkServer {
                                                         asyncRunnable.forEach(Runnable::run);
                                                         sendChunk(world, configWorld, worldNetworkTraffic, view, chunkX, chunkZ, chunkNBT, chunkLight, syncKey, worldCumulativeReport, threadCumulativeReport);
                                                         break handlePlayer;
-                                                    } catch (NullPointerException | NoClassDefFoundError | NoSuchMethodError | NoSuchFieldError exception) {
+                                                    } catch (NullPointerException | NoClassDefFoundError |
+                                                             NoSuchMethodError | NoSuchFieldError exception) {
                                                         exception.printStackTrace();
                                                     } catch (Exception ignored) {
                                                     }
@@ -475,6 +518,7 @@ public final class ChunkServer {
             }
         }
     }
+
     private void sendChunk(World world, ConfigData.World configWorld, NetworkTraffic worldNetworkTraffic, PlayerChunkView view, int chunkX, int chunkZ, BranchNBT chunkNBT, BranchChunkLight chunkLight, long syncKey, CumulativeReport worldCumulativeReport, CumulativeReport threadCumulativeReport) {
         BranchChunk chunk = branchMinecraft.fromChunk(world, chunkX, chunkZ, chunkNBT, configData.calculateMissingHeightMap);
         // 呼叫發送區塊事件
@@ -576,6 +620,7 @@ public final class ChunkServer {
 //        view.clear();
         waitMoveSyncQueue.add(() -> branchPacket.sendViewDistance(player, view.getMap().extendDistance));
     }
+
     /**
      * 切換世界/長距離傳送/死亡重生, 則等待一段時間
      */

@@ -4,11 +4,17 @@ package xuan.cat.fartherviewdistance.code.data;
  * 累計處裡報告
  */
 public final class CumulativeReport {
-    /** 高速讀取 */
+    /**
+     * 高速讀取
+     */
     private volatile int[] loadFast = new int[300];
-    /** 慢速讀取 */
+    /**
+     * 慢速讀取
+     */
     private volatile int[] loadSlow = new int[300];
-    /** 消耗 */
+    /**
+     * 消耗
+     */
     private volatile int[] consume = new int[300];
 
 
@@ -33,9 +39,11 @@ public final class CumulativeReport {
     public void increaseLoadFast() {
         loadFast[0]++;
     }
+
     public void increaseLoadSlow() {
         loadSlow[0]++;
     }
+
     public void addConsume(int value) {
         consume[0] += value;
     }
@@ -43,19 +51,21 @@ public final class CumulativeReport {
 
     public int reportLoadFast5s() {
         int total = 0;
-        for (int i = 0 ; i < 5 ; ++i)
+        for (int i = 0; i < 5; ++i)
             total += loadFast[i];
         return total;
     }
+
     public int reportLoadFast1m() {
         int total = 0;
-        for (int i = 0 ; i < 60 ; ++i)
+        for (int i = 0; i < 60; ++i)
             total += loadFast[i];
         return total;
     }
+
     public int reportLoadFast5m() {
         int total = 0;
-        for (int i = 0 ; i < 300 ; ++i)
+        for (int i = 0; i < 300; ++i)
             total += loadFast[i];
         return total;
     }
@@ -63,19 +73,21 @@ public final class CumulativeReport {
 
     public int reportLoadSlow5s() {
         int total = 0;
-        for (int i = 0 ; i < 5 ; ++i)
+        for (int i = 0; i < 5; ++i)
             total += loadSlow[i];
         return total;
     }
+
     public int reportLoadSlow1m() {
         int total = 0;
-        for (int i = 0 ; i < 60 ; ++i)
+        for (int i = 0; i < 60; ++i)
             total += loadSlow[i];
         return total;
     }
+
     public int reportLoadSlow5m() {
         int total = 0;
-        for (int i = 0 ; i < 300 ; ++i)
+        for (int i = 0; i < 300; ++i)
             total += loadSlow[i];
         return total;
     }
@@ -83,19 +95,21 @@ public final class CumulativeReport {
 
     public long reportConsume5s() {
         long total = 0;
-        for (int i = 0 ; i < 5 ; ++i)
+        for (int i = 0; i < 5; ++i)
             total += consume[i];
         return total;
     }
+
     public long reportConsume1m() {
         long total = 0;
-        for (int i = 0 ; i < 60 ; ++i)
+        for (int i = 0; i < 60; ++i)
             total += consume[i];
         return total;
     }
+
     public long reportConsume5m() {
         long total = 0;
-        for (int i = 0 ; i < 300 ; ++i)
+        for (int i = 0; i < 300; ++i)
             total += consume[i];
         return total;
     }

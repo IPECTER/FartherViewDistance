@@ -6,29 +6,46 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 網路速度監聽器
  */
 public final class NetworkSpeed {
-    /** 測速用時間戳 */
-    public volatile long speedTimestamp = 0;
-    /** 測速用數據量 */
-    public volatile int speedConsume = 0;
-    /** 測速用 ID */
-    public volatile Long speedID = null;
-
-    /** 延遲用時間戳 */
-    public volatile long pingTimestamp = 0;
-    /** 延遲用 ID */
-    public volatile Long pingID = null;
-    /** 最後一次的延遲 */
-    public volatile int lastPing = 0;
-
-    /** 寫入紀錄 */
-    private volatile int[] writeArray = new int[50];
-    /** 延遲紀錄 */
-    private volatile int[] consumeArray = new int[50];
-    /** 寫入累計 */
+    /**
+     * 寫入累計
+     */
     private final AtomicInteger writeTotal = new AtomicInteger(0);
-    /** 寫入累計 */
+    /**
+     * 寫入累計
+     */
     private final AtomicInteger consumeTotal = new AtomicInteger(0);
-
+    /**
+     * 測速用時間戳
+     */
+    public volatile long speedTimestamp = 0;
+    /**
+     * 測速用數據量
+     */
+    public volatile int speedConsume = 0;
+    /**
+     * 測速用 ID
+     */
+    public volatile Long speedID = null;
+    /**
+     * 延遲用時間戳
+     */
+    public volatile long pingTimestamp = 0;
+    /**
+     * 延遲用 ID
+     */
+    public volatile Long pingID = null;
+    /**
+     * 最後一次的延遲
+     */
+    public volatile int lastPing = 0;
+    /**
+     * 寫入紀錄
+     */
+    private volatile int[] writeArray = new int[50];
+    /**
+     * 延遲紀錄
+     */
+    private volatile int[] consumeArray = new int[50];
 
     /**
      * 加入

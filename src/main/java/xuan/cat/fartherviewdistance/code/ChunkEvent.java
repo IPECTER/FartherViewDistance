@@ -60,7 +60,6 @@ public final class ChunkEvent implements Listener {
     }
 
 
-
     /**
      * @param event 玩家登入
      */
@@ -68,6 +67,7 @@ public final class ChunkEvent implements Listener {
     public void on(PlayerJoinEvent event) {
         chunkServer.initView(event.getPlayer());
     }
+
     /**
      * @param event 玩家登出
      */
@@ -75,7 +75,6 @@ public final class ChunkEvent implements Listener {
     public void on(PlayerQuitEvent event) {
         chunkServer.clearView(event.getPlayer());
     }
-
 
 
     /**
@@ -93,7 +92,6 @@ public final class ChunkEvent implements Listener {
     public void on(WorldUnloadEvent event) {
         chunkServer.clearWorld(event.getWorld());
     }
-
 
 
     /**

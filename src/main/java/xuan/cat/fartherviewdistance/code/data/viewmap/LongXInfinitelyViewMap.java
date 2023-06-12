@@ -30,15 +30,25 @@ public final class LongXInfinitelyViewMap extends ViewMap {
             ... |                                                                       |                                                                        |                                                                        |                                                                     |  |
       long[254] |--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|------- -| --------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|------|--|
      */
-    /** 視圖計算 */
+    /**
+     * 視圖計算
+     */
     private final long[] viewData;
-    /** 單行 long 數量 */
+    /**
+     * 單行 long 數量
+     */
     private final int rowStack;
-    /** 半行 long 數量 */
+    /**
+     * 半行 long 數量
+     */
     private final int rowStackOffset;
-    /** 最大半徑塊數 */
+    /**
+     * 最大半徑塊數
+     */
     private final int maxRadius;
-    /** 最大直徑塊數 */
+    /**
+     * 最大直徑塊數
+     */
     private final int maxDiameter;
 
 

@@ -14,46 +14,82 @@ import xuan.cat.fartherviewdistance.code.data.viewmap.ViewShape;
 
 import java.util.Map;
 
-/** 玩家視圖計算器 */
+/**
+ * 玩家視圖計算器
+ */
 public final class PlayerChunkView {
-    public  final PlayerView viewAPI;
+    public final PlayerView viewAPI;
+    /**
+     * 網路流量
+     */
+    public final NetworkTraffic networkTraffic = new NetworkTraffic();
+    /**
+     * 網路速度
+     */
+    public final NetworkSpeed networkSpeed = new NetworkSpeed();
+    /**
+     * 報告
+     */
+    public final CumulativeReport cumulativeReport = new CumulativeReport();
     private final Player player;
     private final BranchPacket branchPacket;
-    /** 視圖計算器 */
+    /**
+     * 視圖計算器
+     */
     private final ViewMap mapView;
-    /** 強制視野距離 */
-    public Integer forciblyMaxDistance = null;
-    /** 強制每秒能傳輸多少數據 (單位 bytes) */
-    public Integer forciblySendSecondMaxBytes = null;
-    /** 最後的視野距離 */
-    private int lastDistance = 0;
     private final ConfigData configData;
-    /** 延遲時間戳 */
-    private long delayTime;
-    /** 已卸除 */
-    private boolean isUnload = false;
-    /** 最後世界 */
-    private World lastWorld;
-    /** 最後座標 */
-    private Location oldLocation = null;
-    /** 移動過快 */
+    /**
+     * 強制視野距離
+     */
+    public Integer forciblyMaxDistance = null;
+    /**
+     * 強制每秒能傳輸多少數據 (單位 bytes)
+     */
+    public Integer forciblySendSecondMaxBytes = null;
+    /**
+     * 移動過快
+     */
     public volatile boolean moveTooFast = false;
-    /** 網路流量 */
-    public final NetworkTraffic networkTraffic = new NetworkTraffic();
-    /** 網路速度 */
-    public final NetworkSpeed networkSpeed = new NetworkSpeed();
-    /** 等待發送 */
+    /**
+     * 等待發送
+     */
     public volatile boolean waitSend = false;
-    /** 同步鑰匙 */
+    /**
+     * 同步鑰匙
+     */
     public volatile long syncKey;
-    /** 報告 */
-    public final CumulativeReport cumulativeReport = new CumulativeReport();
-    /** 檢查權限 */
-    private Long permissionsCheck = null;
-    /** 權限命中 */
-    private Integer permissionsHit = null;
-    /** 權限需要檢查 */
+    /**
+     * 權限需要檢查
+     */
     public boolean permissionsNeed = true;
+    /**
+     * 最後的視野距離
+     */
+    private int lastDistance = 0;
+    /**
+     * 延遲時間戳
+     */
+    private long delayTime;
+    /**
+     * 已卸除
+     */
+    private boolean isUnload = false;
+    /**
+     * 最後世界
+     */
+    private World lastWorld;
+    /**
+     * 最後座標
+     */
+    private Location oldLocation = null;
+    /**
+     * 檢查權限
+     */
+    private Long permissionsCheck = null;
+    /**
+     * 權限命中
+     */
+    private Integer permissionsHit = null;
 
 
     public PlayerChunkView(Player player, ConfigData configData, ViewShape viewShape, BranchPacket branchPacket) {
@@ -82,6 +118,7 @@ public final class PlayerChunkView {
     public void updateDistance() {
         updateDistance(false);
     }
+
     private void updateDistance(boolean forcibly) {
         int newDistance = max();
         synchronized (mapView) {
@@ -115,6 +152,7 @@ public final class PlayerChunkView {
     public boolean overSpeed() {
         return overSpeed(player.getLocation());
     }
+
     public boolean overSpeed(Location location) {
         ConfigData.World configWorld = configData.getWorld(lastWorld.getName());
         if (configWorld.speedingNotSend == -1) {
@@ -135,9 +173,11 @@ public final class PlayerChunkView {
     public synchronized boolean move() {
         return move(player.getLocation());
     }
+
     public synchronized boolean move(Location location) {
         return move(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
+
     public synchronized boolean move(int chunkX, int chunkZ) {
         if (isUnload)
             return false;
@@ -166,6 +206,7 @@ public final class PlayerChunkView {
     public void delay() {
         delay(System.currentTimeMillis() + configData.getWorld(lastWorld.getName()).delayBeforeSend);
     }
+
     public void delay(long delayTime) {
         this.delayTime = delayTime;
     }
@@ -182,19 +223,19 @@ public final class PlayerChunkView {
         if (delayTime >= System.currentTimeMillis())
             return null;
 
-        Long        chunkKey    = mapView.get();
+        Long chunkKey = mapView.get();
         if (chunkKey == null)
             return null;
 
-        WorldBorder worldBorder         = lastWorld.getWorldBorder();
-        int         chunkX              = ViewMap.getX(chunkKey);
-        int         chunkZ              = ViewMap.getZ(chunkKey);
-        Location    borderCenter        = worldBorder.getCenter();
-        int         borderSizeRadius    = (int) worldBorder.getSize() / 2;
-        int         borderMinX          = ((borderCenter.getBlockX() - borderSizeRadius) >> 4) - 1;
-        int         borderMaxX          = ((borderCenter.getBlockX() + borderSizeRadius) >> 4) + 1;
-        int         borderMinZ          = ((borderCenter.getBlockZ() - borderSizeRadius) >> 4) - 1;
-        int         borderMaxZ          = ((borderCenter.getBlockZ() + borderSizeRadius) >> 4) + 1;
+        WorldBorder worldBorder = lastWorld.getWorldBorder();
+        int chunkX = ViewMap.getX(chunkKey);
+        int chunkZ = ViewMap.getZ(chunkKey);
+        Location borderCenter = worldBorder.getCenter();
+        int borderSizeRadius = (int) worldBorder.getSize() / 2;
+        int borderMinX = ((borderCenter.getBlockX() - borderSizeRadius) >> 4) - 1;
+        int borderMaxX = ((borderCenter.getBlockX() + borderSizeRadius) >> 4) + 1;
+        int borderMinZ = ((borderCenter.getBlockZ() - borderSizeRadius) >> 4) - 1;
+        int borderMaxZ = ((borderCenter.getBlockZ() + borderSizeRadius) >> 4) + 1;
 
         return borderMinX <= chunkX && chunkX <= borderMaxX && borderMinZ <= chunkZ && chunkZ <= borderMaxZ ? chunkKey : null;
     }
@@ -218,8 +259,8 @@ public final class PlayerChunkView {
             mapView.clear();
             updateDistance(true);
 
-            lastWorld   = player.getWorld();
-            isUnload    = false;
+            lastWorld = player.getWorld();
+            isUnload = false;
             return true;
         }
         return false;

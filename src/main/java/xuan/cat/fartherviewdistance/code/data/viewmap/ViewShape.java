@@ -4,7 +4,9 @@ package xuan.cat.fartherviewdistance.code.data.viewmap;
  * 視圖形狀
  */
 public enum ViewShape {
-    /** 方形 */
+    /**
+     * 方形
+     */
     SQUARE((int aX, int aZ, int bX, int bZ, int viewDistance) -> {
         int minX = bX - viewDistance;
         int minZ = bZ - viewDistance;
@@ -12,7 +14,9 @@ public enum ViewShape {
         int maxZ = bZ + viewDistance;
         return aX >= minX && aZ >= minZ && aX <= maxX && aZ <= maxZ;
     }),
-    /** 圓形 */
+    /**
+     * 圓形
+     */
     ROUND((int aX, int aZ, int bX, int bZ, int viewDistance) -> {
         int viewDiameter = viewDistance * viewDistance + viewDistance;
         int distanceX = aX - bX;
@@ -31,27 +35,30 @@ public enum ViewShape {
     }),
     ;
 
-    /**
-     * 許可計算
-     */
-    interface JudgeInside {
-        boolean test(int aX, int aZ, int bX, int bZ, int viewDistance);
-    }
     private final JudgeInside judgeInside;
     private final JudgeInside judgeInsideEdge;
 
     ViewShape(JudgeInside judgeInside) {
         this(judgeInside, judgeInside);
     }
+
     ViewShape(JudgeInside judgeInside, JudgeInside judgeInsideEdge) {
-        this.judgeInside        = judgeInside;
-        this.judgeInsideEdge    = judgeInsideEdge;
+        this.judgeInside = judgeInside;
+        this.judgeInsideEdge = judgeInsideEdge;
     }
 
     public boolean isInside(int aX, int aZ, int bX, int bZ, int viewDistance) {
         return judgeInside.test(aX, aZ, bX, bZ, viewDistance);
     }
+
     public boolean isInsideEdge(int aX, int aZ, int bX, int bZ, int viewDistance) {
         return judgeInsideEdge.test(aX, aZ, bX, bZ, viewDistance);
+    }
+
+    /**
+     * 許可計算
+     */
+    interface JudgeInside {
+        boolean test(int aX, int aZ, int bX, int bZ, int viewDistance);
     }
 }

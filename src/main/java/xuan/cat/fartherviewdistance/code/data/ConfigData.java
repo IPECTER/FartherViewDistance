@@ -14,21 +14,21 @@ import java.util.*;
  * 配置文件
  */
 public final class ConfigData {
-    private FileConfiguration fileConfiguration;
     private final JavaPlugin plugin;
     public ViewMapMode viewDistanceMode;
     public int serverViewDistance;
     public boolean autoAdaptPlayerNetworkSpeed;
     public double playerNetworkSpeedUseDegree;
     public int asyncThreadAmount;
-    private int serverSendSecondMaxBytes;
     public int serverTickMaxGenerateAmount;
-    private World worldDefault;
-    private Map<String, World> worlds;
     public boolean calculateMissingHeightMap;
     public boolean disableFastProcess;
     public List<Map.Entry<String, Integer>> permissionsNodeList;
     public long permissionsPeriodicMillisecondCheck;
+    private FileConfiguration fileConfiguration;
+    private int serverSendSecondMaxBytes;
+    private World worldDefault;
+    private Map<String, World> worlds;
 
     public ConfigData(JavaPlugin plugin, FileConfiguration fileConfiguration) {
         this.plugin = plugin;
@@ -49,49 +49,6 @@ public final class ConfigData {
     public World getWorld(String worldName) {
         return worlds.getOrDefault(worldName, worldDefault);
     }
-
-    /**
-     * 世界配置
-     */
-    public class World {
-        public final String worldName;
-        public final boolean enable;
-        public final int maxViewDistance;
-        public final int worldTickMaxGenerateAmount;
-        public final boolean sendTitleData;
-        private final int worldSendSecondMaxBytes;
-        private final int playerSendSecondMaxBytes;
-        public final boolean readServerLoadedChunk;
-        public final int delayBeforeSend;
-        public final Map<BlockData, BlockData[]> preventXray;
-        public final double speedingNotSend;
-
-        public World(ViewMapMode viewDistanceMode, String worldName, boolean enable, int maxViewDistance, int worldTickMaxGenerateAmount, boolean sendTitleData, int worldSendSecondMaxBytes, int playerSendSecondMaxBytes, boolean readServerLoadedChunk, int delayBeforeSend, Map<BlockData, BlockData[]> preventXray, double speedingNotSend) {
-            this.worldName = worldName;
-            this.enable = enable;
-            this.maxViewDistance = maxViewDistance;
-            if (maxViewDistance > viewDistanceMode.getExtend()) {
-                plugin.getLogger().warning("`max-view-distance: " + maxViewDistance + "` exceeded the maximum distance allowed by `view-distance-mode: " + viewDistanceMode.name() + "`");
-            }
-            this.worldTickMaxGenerateAmount = worldTickMaxGenerateAmount;
-            this.sendTitleData = sendTitleData;
-            this.worldSendSecondMaxBytes = worldSendSecondMaxBytes;
-            this.playerSendSecondMaxBytes = playerSendSecondMaxBytes;
-            this.readServerLoadedChunk = readServerLoadedChunk;
-            this.delayBeforeSend = delayBeforeSend;
-            this.preventXray = preventXray;
-            this.speedingNotSend = speedingNotSend;
-        }
-
-        public int getPlayerSendTickMaxBytes() {
-            return playerSendSecondMaxBytes / 20;
-        }
-
-        public int getWorldSendTickMaxBytes() {
-            return worldSendSecondMaxBytes / 20;
-        }
-    }
-
 
     private void load() {
         String viewDistanceModeString = fileConfiguration.getString("view-distance-mode", "X31");
@@ -212,7 +169,7 @@ public final class ConfigData {
                         }
 
                         BlockData[] materials = new BlockData[hitMaterials.size()];
-                        for (int i = 0 ; i < materials.length ; ++i )
+                        for (int i = 0; i < materials.length; ++i)
                             materials[i] = hitMaterials.get(i).createBlockData();
 
                         preventXrayConversionMap.put(toMaterial.createBlockData(), materials);
@@ -220,6 +177,48 @@ public final class ConfigData {
                 }
             }
             return preventXrayConversionMap;
+        }
+    }
+
+    /**
+     * 世界配置
+     */
+    public class World {
+        public final String worldName;
+        public final boolean enable;
+        public final int maxViewDistance;
+        public final int worldTickMaxGenerateAmount;
+        public final boolean sendTitleData;
+        public final boolean readServerLoadedChunk;
+        public final int delayBeforeSend;
+        public final Map<BlockData, BlockData[]> preventXray;
+        public final double speedingNotSend;
+        private final int worldSendSecondMaxBytes;
+        private final int playerSendSecondMaxBytes;
+
+        public World(ViewMapMode viewDistanceMode, String worldName, boolean enable, int maxViewDistance, int worldTickMaxGenerateAmount, boolean sendTitleData, int worldSendSecondMaxBytes, int playerSendSecondMaxBytes, boolean readServerLoadedChunk, int delayBeforeSend, Map<BlockData, BlockData[]> preventXray, double speedingNotSend) {
+            this.worldName = worldName;
+            this.enable = enable;
+            this.maxViewDistance = maxViewDistance;
+            if (maxViewDistance > viewDistanceMode.getExtend()) {
+                plugin.getLogger().warning("`max-view-distance: " + maxViewDistance + "` exceeded the maximum distance allowed by `view-distance-mode: " + viewDistanceMode.name() + "`");
+            }
+            this.worldTickMaxGenerateAmount = worldTickMaxGenerateAmount;
+            this.sendTitleData = sendTitleData;
+            this.worldSendSecondMaxBytes = worldSendSecondMaxBytes;
+            this.playerSendSecondMaxBytes = playerSendSecondMaxBytes;
+            this.readServerLoadedChunk = readServerLoadedChunk;
+            this.delayBeforeSend = delayBeforeSend;
+            this.preventXray = preventXray;
+            this.speedingNotSend = speedingNotSend;
+        }
+
+        public int getPlayerSendTickMaxBytes() {
+            return playerSendSecondMaxBytes / 20;
+        }
+
+        public int getWorldSendTickMaxBytes() {
+            return worldSendSecondMaxBytes / 20;
         }
     }
 }

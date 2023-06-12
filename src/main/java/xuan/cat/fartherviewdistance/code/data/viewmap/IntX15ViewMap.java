@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 表示區塊視野
+ *
  * @see LongX31ViewMap 的延伸版本
  */
 public final class IntX15ViewMap extends ViewMap {
@@ -42,13 +43,21 @@ public final class IntX15ViewMap extends ViewMap {
 
 
      */
-    /** 距離 */
+    /**
+     * 距離
+     */
     private static final int DISTANCE = 16;
-    /** 中心 */
+    /**
+     * 中心
+     */
     private static final int CENTER = 15;
-    /** 長度 */
+    /**
+     * 長度
+     */
     private static final int LENGTH = 31;
-    /** 視圖計算 */
+    /**
+     * 視圖計算
+     */
     private final int[] chunkMap = new int[LENGTH];
 
 
@@ -56,6 +65,21 @@ public final class IntX15ViewMap extends ViewMap {
         super(viewShape);
     }
 
+    public static int blockToChunk(double blockLocation) {
+        return blockToChunk((int) blockLocation);
+    }
+
+    public static int blockToChunk(int blockLocation) {
+        return blockLocation >> 4;
+    }
+
+    public static String debug(int value) {
+        StringBuilder builder = new StringBuilder(LENGTH);
+        for (int i = LENGTH; i >= 0; i--) {
+            builder.append((value >> i & 1) == 1 ? '■' : '□');
+        }
+        return builder.toString();
+    }
 
     public List<Long> movePosition(Location location) {
         return movePosition(blockToChunk(location.getX()), blockToChunk(location.getZ()));
@@ -161,7 +185,6 @@ public final class IntX15ViewMap extends ViewMap {
             return new ArrayList<>(0);
         }
     }
-
 
     /**
      * 取得下一個應該要處裡的區塊
@@ -333,7 +356,6 @@ public final class IntX15ViewMap extends ViewMap {
         return null;
     }
 
-
     public boolean isWaitSafe(int pointerX, int pointerZ) {
         return !isSendSafe(pointerX, pointerZ);
     }
@@ -341,7 +363,6 @@ public final class IntX15ViewMap extends ViewMap {
     public boolean isSendSafe(int pointerX, int pointerZ) {
         return ((chunkMap[pointerZ] >> pointerX) & 0b00000000000000000000000000000001) == 0b00000000000000000000000000000001;
     }
-
 
     public boolean markWaitSafe(int pointerX, int pointerZ) {
         if (isSendSafe(pointerX, pointerZ)) {
@@ -356,13 +377,11 @@ public final class IntX15ViewMap extends ViewMap {
         chunkMap[pointerZ] |= (0b00000000000000000000000000000001 << pointerX);
     }
 
-
     public boolean inPosition(int positionX, int positionZ) {
         int pointerX = CENTER + (centerX - positionX);
         int pointerZ = CENTER + (centerZ - positionZ);
         return pointerX <= CENTER + extendDistance && pointerX >= CENTER - extendDistance && pointerZ <= CENTER + extendDistance && pointerZ >= CENTER - extendDistance;
     }
-
 
     public boolean isWaitPosition(long positionKey) {
         int x = getX(positionKey);
@@ -418,7 +437,6 @@ public final class IntX15ViewMap extends ViewMap {
             markSendSafe(pointerX, pointerZ);
     }
 
-
     /**
      * @param range 範圍外的區塊標記為等待中
      */
@@ -460,7 +478,6 @@ public final class IntX15ViewMap extends ViewMap {
             }
         }
     }
-
 
     /**
      * @param range 範圍內的區塊標記為等待中
@@ -504,12 +521,10 @@ public final class IntX15ViewMap extends ViewMap {
         }
     }
 
-
     public void clear() {
         System.arraycopy(new int[LENGTH], 0, chunkMap, 0, chunkMap.length);
         completedDistance.set(-1);
     }
-
 
     public int[] getChunkMap() {
         return chunkMap;
@@ -546,24 +561,6 @@ public final class IntX15ViewMap extends ViewMap {
             }
         }
         return chunkList;
-    }
-
-
-    public static int blockToChunk(double blockLocation) {
-        return blockToChunk((int) blockLocation);
-    }
-
-    public static int blockToChunk(int blockLocation) {
-        return blockLocation >> 4;
-    }
-
-
-    public static String debug(int value) {
-        StringBuilder builder = new StringBuilder(LENGTH);
-        for (int i = LENGTH; i >= 0; i--) {
-            builder.append((value >> i & 1) == 1 ? '■' : '□');
-        }
-        return builder.toString();
     }
 
     public void debug(CommandSender sender) {
