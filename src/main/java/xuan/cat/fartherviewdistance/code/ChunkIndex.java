@@ -8,14 +8,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import xuan.cat.fartherviewdistance.api.branch.BranchMinecraft;
 import xuan.cat.fartherviewdistance.api.branch.BranchPacket;
-import xuan.cat.fartherviewdistance.code.branch.v17.Branch_17_Minecraft;
-import xuan.cat.fartherviewdistance.code.branch.v17.Branch_17_Packet;
-import xuan.cat.fartherviewdistance.code.branch.v18.Branch_18_Minecraft;
-import xuan.cat.fartherviewdistance.code.branch.v18.Branch_18_Packet;
-import xuan.cat.fartherviewdistance.code.branch.v19.Branch_19_Minecraft;
-import xuan.cat.fartherviewdistance.code.branch.v19.Branch_19_Packet;
-import xuan.cat.fartherviewdistance.code.branch.v20.Branch_20_Minecraft;
-import xuan.cat.fartherviewdistance.code.branch.v20.Branch_20_Packet;
 import xuan.cat.fartherviewdistance.code.command.Command;
 import xuan.cat.fartherviewdistance.code.command.CommandSuggest;
 import xuan.cat.fartherviewdistance.code.data.ConfigData;
@@ -54,23 +46,23 @@ public final class ChunkIndex extends JavaPlugin {
 
         switch (version) {
             case "v1_17_R1" -> {
-                branchPacket = new Branch_17_Packet();
-                branchMinecraft = new Branch_17_Minecraft();
+                branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_17_R1.Packet();
+                branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_17_R1.Minecraft();
                 chunkServer = new ChunkServer(configData, this, ViewShape.SQUARE, branchMinecraft, branchPacket);
             }
             case "v1_18_R1" -> {
-                branchPacket = new Branch_18_Packet();
-                branchMinecraft = new Branch_18_Minecraft();
+                branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_18_R2.Packet();
+                branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_18_R2.Minecraft();
                 chunkServer = new ChunkServer(configData, this, ViewShape.ROUND, branchMinecraft, branchPacket);
             }
             case "v1_19_R3" -> {
-                branchPacket = new Branch_19_Packet();
-                branchMinecraft = new Branch_19_Minecraft();
+                branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_19_R3.Packet();
+                branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_19_R3.Minecraft();
                 chunkServer = new ChunkServer(configData, this, ViewShape.ROUND, branchMinecraft, branchPacket);
             }
             case "v1_20_R1" -> {
-                branchPacket = new Branch_20_Packet();
-                branchMinecraft = new Branch_20_Minecraft();
+                branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_20_R1.Packet();
+                branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_20_R1.Minecraft();
                 chunkServer = new ChunkServer(configData, this, ViewShape.ROUND, branchMinecraft, branchPacket);
             }
             default -> {
@@ -103,8 +95,7 @@ public final class ChunkIndex extends JavaPlugin {
     @Override
     public void onDisable() {
 //        ChunkPlaceholder.unregisterPlaceholder();
-        if (chunkServer != null)
-            chunkServer.close();
+        if (chunkServer != null) chunkServer.close();
     }
 
 }
