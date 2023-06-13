@@ -265,7 +265,6 @@ public final class ChunkRegionLoader {
         nbt.putInt("zPos", chunkPos.z);
         nbt.putLong("LastUpdate", world.getGameTime());
         nbt.putLong("InhabitedTime", chunk.getInhabitedTime());
-        System.out.println(chunk.getStatus().getName());
         nbt.putString("Status", chunk.getStatus().getName());
         BlendingData blendingData = chunk.getBlendingData();
         if (blendingData != null) {
