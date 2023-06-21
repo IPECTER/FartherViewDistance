@@ -3,7 +3,7 @@ plugins {
     id 'io.papermc.paperweight.userdev' version "1.5.3" apply false
 }
 
-version = "10.0.0"
+version = "10.1.0"
 group = "xuan.cat.fartherviewdistance"
 
 configurations {
@@ -24,17 +24,17 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.1'
 
     extraLibs project(path: ':NMS')
-    extraLibs project(path: ':NMS_1_17_R1')
+    //extraLibs project(path: ':NMS_1_17_R1')
     extraLibs project(path: ':NMS_1_18_R2', configuration: 'reobf')
     extraLibs project(path: ':NMS_1_19_R3', configuration: 'reobf')
     extraLibs project(path: ':NMS_1_20_R1', configuration: 'reobf')
 
     implementation project(path: ':NMS')
-    implementation project(path: ':NMS_1_17_R1')
+    //implementation project(path: ':NMS_1_17_R1')
     implementation project(path: ':NMS_1_18_R2', configuration: 'reobf')
     implementation project(path: ':NMS_1_19_R3', configuration: 'reobf')
     implementation project(path: ':NMS_1_20_R1', configuration: 'reobf')
