@@ -30,7 +30,7 @@ public final class Packet implements BranchPacket {
         sendPacket(player, new PacketPlayOutUnloadChunk(chunkX, chunkZ));
     }
 
-    public Consumer<Player> sendChunkAndLight(Player player, BranchChunk chunk, BranchChunkLight light, boolean needTile, Consumer<Integer> consumeTraffic) {
+    public Consumer<Player> sendChunkAndLight(BranchChunk chunk, BranchChunkLight light, boolean needTile, Consumer<Integer> consumeTraffic) {
         PacketPlayOutMapChunk packetChunk = handleChunk.createMapChunkPacket(chunk.getChunk(), needTile, consumeTraffic);
         PacketPlayOutLightUpdate packetLight = handleLightUpdate.createLightUpdatePacket(chunk.getX(), chunk.getZ(), (ChunkLight) light, true, consumeTraffic);
         try {
@@ -39,9 +39,9 @@ public final class Packet implements BranchPacket {
         } catch (NoSuchMethodError noSuchMethodError) {
             // 適用於 spigot (不推薦)
         }
-        return (p) -> {
-            sendPacket(p, packetLight);
-            sendPacket(p, packetChunk);
+        return (player) -> {
+            sendPacket(player, packetLight);
+            sendPacket(player, packetChunk);
         };
     }
 

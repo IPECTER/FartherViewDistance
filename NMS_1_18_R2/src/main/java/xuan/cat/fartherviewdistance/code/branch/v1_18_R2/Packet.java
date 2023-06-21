@@ -35,7 +35,7 @@ public final class Packet implements BranchPacket {
         sendPacket(player, new ClientboundForgetLevelChunkPacket(chunkX, chunkZ));
     }
 
-    public Consumer<Player> sendChunkAndLight(Player player, BranchChunk chunk, BranchChunkLight light, boolean needTile, Consumer<Integer> consumeTraffic) {
+    public Consumer<Player> sendChunkAndLight(BranchChunk chunk, BranchChunkLight light, boolean needTile, Consumer<Integer> consumeTraffic) {
         FriendlyByteBuf serializer = new FriendlyByteBuf(Unpooled.buffer().writerIndex(0));
         serializer.writeInt(chunk.getX());
         serializer.writeInt(chunk.getZ());
@@ -49,7 +49,7 @@ public final class Packet implements BranchPacket {
         } catch (NoSuchMethodError noSuchMethodError) {
             // 適用於 spigot (不推薦)
         }
-        return (p) -> sendPacket(p, packet);
+        return (player) -> sendPacket(player, packet);
     }
 
     public void sendKeepAlive(Player player, long id) {
