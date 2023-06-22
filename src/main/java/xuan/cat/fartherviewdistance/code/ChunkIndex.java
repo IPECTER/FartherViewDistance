@@ -45,11 +45,11 @@ public final class ChunkIndex extends JavaPlugin {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace("org.bukkit.craftbukkit", "").replace(".", "");
 
         switch (version) {
-            case "v1_17_R1" -> {
-                branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_17_R1.Packet();
-                branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_17_R1.Minecraft();
-                chunkServer = new ChunkServer(configData, this, ViewShape.SQUARE, branchMinecraft, branchPacket);
-            }
+//            case "v1_17_R1" -> {
+//                branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_17_R1.Packet();
+//                branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_17_R1.Minecraft();
+//                chunkServer = new ChunkServer(configData, this, ViewShape.SQUARE, branchMinecraft, branchPacket);
+//            }
             case "v1_18_R1" -> {
                 branchPacket = new xuan.cat.fartherviewdistance.code.branch.v1_18_R2.Packet();
                 branchMinecraft = new xuan.cat.fartherviewdistance.code.branch.v1_18_R2.Minecraft();
