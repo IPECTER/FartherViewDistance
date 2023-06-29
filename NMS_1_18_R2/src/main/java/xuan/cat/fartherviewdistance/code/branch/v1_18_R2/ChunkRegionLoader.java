@@ -99,7 +99,7 @@ public final class ChunkRegionLoader {
                     }).getOrThrow(false, (message) -> {
                     });
                 } else {
-                    paletteBlock = new PalettedContainer<>(Block.BLOCK_STATE_REGISTRY, Blocks.AIR.defaultBlockState(), PalettedContainer.Strategy.SECTION_STATES);
+                    paletteBlock = new PalettedContainer<>(Block.BLOCK_STATE_REGISTRY, Blocks.AIR.defaultBlockState(), PalettedContainer.Strategy.SECTION_STATES, world.chunkPacketBlockController.getPresetBlockStates(world, chunkPos, locationY));
                 }
 
                 // 生態轉換器

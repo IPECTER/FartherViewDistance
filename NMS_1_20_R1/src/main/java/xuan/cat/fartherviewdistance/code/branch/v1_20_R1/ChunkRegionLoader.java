@@ -116,7 +116,7 @@ public final class ChunkRegionLoader {
                     }).getOrThrow(false, (message) -> {
                     });
                 } else {
-                    paletteBlock = new PalettedContainer<>(Block.BLOCK_STATE_REGISTRY, Blocks.AIR.defaultBlockState(), PalettedContainer.Strategy.SECTION_STATES, null);
+                    paletteBlock = new PalettedContainer<>(Block.BLOCK_STATE_REGISTRY, Blocks.AIR.defaultBlockState(), PalettedContainer.Strategy.SECTION_STATES, world.chunkPacketBlockController.getPresetBlockStates(world, chunkPos, locationY));
                 }
 
                 // 生態轉換器
@@ -265,7 +265,6 @@ public final class ChunkRegionLoader {
         nbt.putInt("zPos", chunkPos.z);
         nbt.putLong("LastUpdate", world.getGameTime());
         nbt.putLong("InhabitedTime", chunk.getInhabitedTime());
-        System.out.println(chunk.getStatus().toString());
         nbt.putString("Status", chunk.getStatus().toString());
         BlendingData blendingData = chunk.getBlendingData();
         if (blendingData != null) {
