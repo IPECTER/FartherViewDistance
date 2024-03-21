@@ -1,4 +1,4 @@
-package xuan.cat.fartherviewdistance.code.branch.v1_20_R1;
+package xuan.cat.fartherviewdistance.code.branch.v1_19_R2;
 
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -22,19 +22,20 @@ public final class PacketHandleLightUpdate {
         }
     }
 
-    public void write(FriendlyByteBuf serializer, ChunkLight light) {
+    public void write(FriendlyByteBuf serializer, ChunkLight light, boolean trustEdges) {
         List<byte[]> dataSky = new ArrayList<>();
         List<byte[]> dataBlock = new ArrayList<>();
         BitSet notSkyEmpty = new BitSet();
         BitSet notBlockEmpty = new BitSet();
         BitSet isSkyEmpty = new BitSet();
         BitSet isBlockEmpty = new BitSet();
-        System.out.println(String.valueOf(light.getBlockLights()));
+
         for (int index = 0; index < light.getArrayLength(); ++index) {
             saveBitSet(light.getSkyLights(), index, notSkyEmpty, isSkyEmpty, dataSky);
             saveBitSet(light.getBlockLights(), index, notBlockEmpty, isBlockEmpty, dataBlock);
         }
 
+        serializer.writeBoolean(trustEdges);
         serializer.writeBitSet(notSkyEmpty);
         serializer.writeBitSet(notBlockEmpty);
         serializer.writeBitSet(isSkyEmpty);

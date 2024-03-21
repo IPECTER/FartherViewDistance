@@ -1,4 +1,4 @@
-package xuan.cat.fartherviewdistance.code.branch.v1_20_R1;
+package xuan.cat.fartherviewdistance.code.branch.v1_20_R2;
 
 import net.minecraft.network.FriendlyByteBuf;
 
