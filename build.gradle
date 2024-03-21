@@ -3,7 +3,7 @@ plugins {
     id 'io.papermc.paperweight.userdev' version "1.5.3" apply false
 }
 
-version = "10.2.0"
+version = "10.2.1"
 group = "xuan.cat.fartherviewdistance"
 
 configurations {

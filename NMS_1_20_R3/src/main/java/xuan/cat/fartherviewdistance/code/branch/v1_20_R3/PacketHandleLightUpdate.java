@@ -29,7 +29,6 @@ public final class PacketHandleLightUpdate {
         BitSet notBlockEmpty = new BitSet();
         BitSet isSkyEmpty = new BitSet();
         BitSet isBlockEmpty = new BitSet();
-        System.out.println(String.valueOf(light.getBlockLights()));
         for (int index = 0; index < light.getArrayLength(); ++index) {
             saveBitSet(light.getSkyLights(), index, notSkyEmpty, isSkyEmpty, dataSky);
             saveBitSet(light.getBlockLights(), index, notBlockEmpty, isBlockEmpty, dataBlock);
